@@ -1,7 +1,6 @@
 # Selenium N-UNIT Test Project
 
-This project is a Selenium-based test automation framework using N-UNIT to automate the testing of web application. The project covers basic CRUD operations on items and tests various functionalities like login, search, and validation for input fields.
-It is version with POM implementation of [selenium-nunit-tests-foody-app](https://github.com/alpeykov/selenium-nunit-tests-foody-app).
+This project is version with POM implementation of [selenium-nunit-tests-foody-app](https://github.com/alpeykov/selenium-nunit-tests-foody-app) using N-UNIT.
 
 ## Tested app
 [Link](http://softuni-qa-loadbalancer-2137572849.eu-north-1.elb.amazonaws.com:85/)
