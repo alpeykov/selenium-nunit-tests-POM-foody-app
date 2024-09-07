@@ -39,7 +39,7 @@ namespace Foody
             driver.Close();
             driver.Quit();
             driver.Dispose();
-            BasePage.Logger.Log("[OneTimeTearDown]");
+            BasePage.Logger.Log("[OneTimeTearDown] completed.");
 
         }
 
