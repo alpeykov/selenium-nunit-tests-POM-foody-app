@@ -3,6 +3,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
 
+
 namespace Foody
 {
     [TestFixture]
@@ -14,6 +15,7 @@ namespace Foody
         [OneTimeSetUp]
         public void Setup()
         {
+            BasePage.Logger.Log("[OneTimeSetUp] has started.");
             var chromeOptions = new ChromeOptions();
             chromeOptions.AddUserProfilePreference("profile.password_manager_enabled", false);
             chromeOptions.AddArgument("--disable-search-engine-choice-screen");
@@ -37,6 +39,8 @@ namespace Foody
             driver.Close();
             driver.Quit();
             driver.Dispose();
+            BasePage.Logger.Log("[OneTimeTearDown]");
+
         }
 
         // Test #1 - Add item with INVALID data
@@ -69,19 +73,19 @@ namespace Foody
             BasePage.Find.XPath("//a[@class='nav-link'][contains(.,'Add Food')]").Click();
 
             basePage.CreateItem(BasePage.LastCreatedTitle, BasePage.LastCreatedDescription);
-            Console.WriteLine($"Last created Title:{BasePage.LastCreatedTitle}");
-            Console.WriteLine($"Last created Description:{BasePage.LastCreatedDescription}");
+             BasePage.Logger.Log($"Last created Title:{BasePage.LastCreatedTitle}");
+             BasePage.Logger.Log($"Last created Description:{BasePage.LastCreatedDescription}");
 
             string expectedUrl = $"{BasePage.GetBaseUrl()}";
             Assert.That(driver.Url, Is.EqualTo(expectedUrl), "The URL after creation did not match the expected URL.");
 
             var lastCard = basePage.GetLastCard();
             var lastCreatedTitleDisplayed = lastCard.FindElement(By.CssSelector("div.p-5>h2"));
-            Console.WriteLine($"Title text of the last item in the list: {lastCreatedTitleDisplayed.Text}");
+             BasePage.Logger.Log($"Title text of the last item in the list: {lastCreatedTitleDisplayed.Text}");
             Assert.That(lastCreatedTitleDisplayed.Text, Is.EqualTo(BasePage.LastCreatedTitle));
 
             basePage.CountDisplayedElements();
-            Console.WriteLine($"The number of displayed cards is: {BasePage.NumberOfDisplayedCards}");
+             BasePage.Logger.Log($"The number of displayed cards is: {BasePage.NumberOfDisplayedCards}");
         }
 
         // Test #3 - Edit the last created item
@@ -92,7 +96,7 @@ namespace Foody
 
             BasePage.LastCreatedTitleEdited = $"Edited Title {basePage.GenerateRandomString(3)}";
             basePage.CountDisplayedElements();
-            Console.WriteLine($"The number of displayed cards BEFORE EDIT is: {BasePage.NumberOfDisplayedCards}");
+             BasePage.Logger.Log($"The number of displayed cards BEFORE EDIT is: {BasePage.NumberOfDisplayedCards}");
 
             var lastCard = basePage.GetLastCard();
             var lastEditBtn = lastCard.FindElement(By.CssSelector("a[href*='/Food/Edit']"));
@@ -102,7 +106,7 @@ namespace Foody
 
             lastCard = basePage.GetLastCard();
             var lastCreatedTitleDisplayed = lastCard.FindElement(By.CssSelector("div.p-5>h2"));
-            Console.WriteLine($"Title text of the last item in the list: {lastCreatedTitleDisplayed.Text}");
+             BasePage.Logger.Log($"Title text of the last item in the list: {lastCreatedTitleDisplayed.Text}");
             basePage.CountDisplayedElements();
 
             var cards = driver.FindElements(By.CssSelector(".row.gx-5.align-items-center"));
@@ -114,8 +118,8 @@ namespace Foody
 
             Assert.That(lastCreatedTitleDisplayed.Text, Is.EqualTo(BasePage.LastCreatedTitleEdited));
             Assert.IsTrue(titleFound, "The card with the last created title was FOUND.");
-            Console.WriteLine($"The number of displayed cards AFTER EDIT is: {BasePage.NumberOfDisplayedCards}");
-            Console.WriteLine($"!!BUG DETECTED!!! Edit functionality creates new item, instead of editing the last created one.");
+             BasePage.Logger.Log($"The number of displayed cards AFTER EDIT is: {BasePage.NumberOfDisplayedCards}");
+             BasePage.Logger.Log($"!!BUG DETECTED!!! Edit functionality creates new item, instead of editing the last created one.");
         }
 
         // Test #4 - Search for last created item
@@ -126,11 +130,11 @@ namespace Foody
 
             basePage.Search(BasePage.LastCreatedTitle);
             basePage.CountDisplayedElements();
-            Console.WriteLine($"The number of displayed cards is: {BasePage.NumberOfDisplayedCards}");
+             BasePage.Logger.Log($"The number of displayed cards is: {BasePage.NumberOfDisplayedCards}");
             Assert.That(BasePage.NumberOfDisplayedCards, Is.EqualTo(1));
 
             var lastCreatedTitleDisplayed = driver.FindElement(By.CssSelector("div.p-5>h2"));
-            Console.WriteLine($"Title text of the last item in the SEARCH list: {lastCreatedTitleDisplayed.Text}");
+             BasePage.Logger.Log($"Title text of the last item in the SEARCH list: {lastCreatedTitleDisplayed.Text}");
             Assert.That(lastCreatedTitleDisplayed.Text, Is.EqualTo(BasePage.LastCreatedTitle));
         }
 
@@ -141,7 +145,7 @@ namespace Foody
             driver.Navigate().GoToUrl(BasePage.GetBaseUrl());
 
             basePage.CountDisplayedElements();
-            Console.WriteLine($"The number of displayed cards BEFORE delete is: {BasePage.NumberOfDisplayedCards}");
+             BasePage.Logger.Log($"The number of displayed cards BEFORE delete is: {BasePage.NumberOfDisplayedCards}");
             var DisplayedCardsBefore = BasePage.NumberOfDisplayedCards;
 
             var lastCard = basePage.GetLastCard();
@@ -150,7 +154,7 @@ namespace Foody
 
             driver.Navigate().GoToUrl(BasePage.GetBaseUrl());
             basePage.CountDisplayedElements();
-            Console.WriteLine($"The number of displayed cards AFTER delete is: {BasePage.NumberOfDisplayedCards}");
+             BasePage.Logger.Log($"The number of displayed cards AFTER delete is: {BasePage.NumberOfDisplayedCards}");
             var DisplayedCardsAfter = BasePage.NumberOfDisplayedCards;
 
             Assert.That(BasePage.NumberOfDisplayedCards, Is.EqualTo(DisplayedCardsBefore - 1));
@@ -197,7 +201,7 @@ namespace Foody
             var logoutBtn = BasePage.Find.XPath("//a[@href='/User/Logout']");
             Assert.IsTrue(logoutBtn.Displayed, "The 'Logout' button is not visible.");
 
-            Console.WriteLine($"Last created user: {BasePage.UserName}");
+             BasePage.Logger.Log($"Last created user: {BasePage.UserName}");
         }
     }
 }

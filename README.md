@@ -1,6 +1,8 @@
 # Selenium N-UNIT Test Project
-
 This project is version with POM implementation of [selenium-nunit-tests-foody-app](https://github.com/alpeykov/selenium-nunit-tests-foody-app) using N-UNIT.
+
+## Logs
+This project also includes functionality for logging test information. Logs are saved in `./logs/log_tests.txt` and include details about each test execution.
 
 ## Tested app
 [Link](http://softuni-qa-loadbalancer-2137572849.eu-north-1.elb.amazonaws.com:85/)

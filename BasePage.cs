@@ -1,9 +1,11 @@
-﻿using OpenQA.Selenium;
+﻿using NUnit.Framework.Internal;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Foody
@@ -21,6 +23,22 @@ namespace Foody
         private static string? lastCreatedTitleEdited;
         private static int? numberOfDisplayedCards;
         private static string? userName;
+
+        //Logs functionality
+        public static class Logger
+        {
+            private static readonly string logFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "logs", "log_tests.txt");
+
+            public static void Log(string message)
+            {
+                Directory.CreateDirectory(Path.GetDirectoryName(logFilePath));
+                using (StreamWriter writer = new StreamWriter(logFilePath, true))
+                {
+                    writer.WriteLine($"{DateTime.Now} : {message}");
+                }
+            }
+        }
+
 
         // Accessor for BaseUrl
         public static string GetBaseUrl()
@@ -90,7 +108,7 @@ namespace Foody
             public static Func<string, IReadOnlyCollection<IWebElement>> PartialLinkText => locator => WaitForElements(() => By.PartialLinkText(locator));
         }
 
-        // Utility methods
+        // Generate random string
         public string GenerateRandomString(int length)
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -199,7 +217,7 @@ namespace Foody
             Actions.MoveToElement(singupBtn).Click().Perform();
             //singupBtn.Click();
 
-            Console.WriteLine($"Username:{userName}");
+            Logger.Log($"Username: {userName}");
         }
 
         // Static properties for test methods
@@ -232,5 +250,7 @@ namespace Foody
             get => userName;
             set => userName = value;
         }
+
     }
 }
+
