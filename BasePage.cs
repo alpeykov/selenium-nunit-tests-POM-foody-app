@@ -34,7 +34,8 @@ namespace Foody
                 Directory.CreateDirectory(Path.GetDirectoryName(logFilePath));
                 using (StreamWriter writer = new StreamWriter(logFilePath, true))
                 {
-                    writer.WriteLine($"{DateTime.Now} : {message}");
+                    string testName = TestContext.CurrentContext.Test.Name;
+                    writer.WriteLine($"{DateTime.Now} : [{testName}] {message}");
                 }
             }
         }
