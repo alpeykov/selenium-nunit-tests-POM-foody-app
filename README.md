@@ -76,4 +76,4 @@ Edit functionality creates new item, instead of editing the last created one.
   
 8. **Login**
    - Description: Logs in with the recently created user.
-   - Expected Outcome: The user is successfully logged in, and functionalities like adding food and logout are available.
+   - Expected Outcome: The user is successfully logged in. Functionalities like adding food and logout are available.
